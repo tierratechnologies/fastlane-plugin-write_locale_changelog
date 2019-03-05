@@ -5,6 +5,8 @@ module Fastlane
   module Actions
     class WriteLocaleChangelogAction < Action
       def self.run(params)
+
+        UI.verbose("path_to_meta_dir #{params[:path_to_meta_dir]}")
         
         # build path to metadata/android -> input needs to be absolute path
         path_to_meta_locales_dir = File.join(params[:path_to_meta_dir], 'android')
@@ -12,7 +14,7 @@ module Fastlane
         changelog = params[:changelog_contents]
         build_number = params[:build_number]
 
-        UI.verbose("path_to_meta_dir #{path_to_meta_dir}")
+        
         UI.verbose("path_to_meta_locales_dir #{path_to_meta_locales_dir}")
         UI.verbose("locales #{locales}")
         UI.verbose("changelog #{changelog}")
