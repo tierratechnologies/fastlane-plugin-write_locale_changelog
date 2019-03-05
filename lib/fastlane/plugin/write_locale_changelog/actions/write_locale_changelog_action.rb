@@ -30,7 +30,7 @@ module Fastlane
 
               # check path e.g. path_to_meta_locales_dir.join(locale, 'changelogs')
               locale_dir_name = File.absolute_path(File.join(path_to_meta_locales_dir, locale))
-              UI.verbose("local_dir_name #{local_dir_name}")
+              UI.verbose("local_dir_name #{locale_dir_name}")
 
               changelogs_dir_name = File.join(locale_dir_name, 'changelogs')
               UI.verbose("local_dir_name #{changelogs_dir_name}")
