@@ -12,6 +12,12 @@ module Fastlane
         changelog = params[:changelog_contents]
         build_number = params[:build_number]
 
+        UI.verbose("path_to_meta_dir #{path_to_meta_dir}")
+        UI.verbose("path_to_meta_locales_dir #{path_to_meta_locales_dir}")
+        UI.verbose("locales #{locales}")
+        UI.verbose("changelog #{changelog}")
+        UI.verbose("buildnumber #{build_number}")
+
         
         if Dir.exists?(path_to_meta_locales_dir) then
 
