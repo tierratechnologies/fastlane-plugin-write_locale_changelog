@@ -8,10 +8,11 @@ module Fastlane
 
         UI.verbose("path_to_meta_dir #{params[:path_to_meta_dir]}")
 
-        UI.message("platform #{lane_context[SharedValues::PLATFORM_NAME]}")
+        UI.verbose("platform #{lane_context[SharedValues::PLATFORM_NAME]}")
         
-        # build path to metadata/android -> input needs to be absolute path
-        path_to_meta_locales_dir = File.join(params[:path_to_meta_dir], 'android')
+        platform = lane_context[SharedValues::PLATFORM_NAME]
+
+        path_to_meta_locales_dir = platform == 'ios' ? params[:path_to_meta_dir] : File.join(params[:path_to_meta_dir], 'android')
         locales = params[:locales]
         changelog = params[:changelog_contents]
         build_number = params[:build_number]
@@ -34,25 +35,46 @@ module Fastlane
               locale_dir_name = File.absolute_path(File.join(path_to_meta_locales_dir, locale))
               UI.verbose("local_dir_name #{locale_dir_name}")
 
-              changelogs_dir_name = File.join(locale_dir_name, 'changelogs')
-              UI.verbose("local_dir_name #{changelogs_dir_name}")
+              if platform == 'android' then
 
-               # check locale directory exists
-              if Dir.exist?(locale_dir_name) == false then
+                changelogs_dir_name = File.join(locale_dir_name, 'changelogs')
+                UI.verbose("local_dir_name #{changelogs_dir_name}")
 
-                # create it
-                Dir.mkdir(locale_dir_name, 0777) 
+                # check locale directory exists
+                if Dir.exist?(locale_dir_name) == false then
+
+                  # create it
+                  Dir.mkdir(locale_dir_name, 0777) 
+                  
+                  # create the corresponding changelogs dir
+                  Dir.mkdir(changelogs_dir_name, 0777)
+
+                end
+
+                file_name = File.join(changelogs_dir_name, "#{build_number}.txt")
+                UI.verbose("locale file_name #{file_name}")
+
+                File.open(file_name, "w") { |file| file.write(changelog)}
+               
+              elsif platform == 'ios' then
                 
-                # create the corresponding changelogs dir
-                Dir.mkdir(changelogs_dir_name, 0777)
+                  # check locale directory exists
+                if Dir.exist?(locale_dir_name) == false then
 
+                  # create it
+                  Dir.mkdir(locale_dir_name, 0777) 
+
+                end
+
+                file_name = File.join(locale_dir_name, "release_notes.txt")
+                UI.verbose("locale file_name #{file_name}")
+
+                File.open(file_name, "w") { |file| file.write(changelog)}
+
+              else
+                UI.error('Unsupported platform')
               end
 
-              file_name = File.join(changelogs_dir_name, "#{build_number}.txt")
-              UI.verbose("locale file_name #{file_name}")
-
-              File.open(file_name, "w") { |file| file.write(changelog)}
-              
             end
 
           else
