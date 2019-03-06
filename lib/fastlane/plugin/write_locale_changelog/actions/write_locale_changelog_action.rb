@@ -81,8 +81,7 @@ module Fastlane
             UI.error!('No locales found in params')
           end
         else
-
-          UI.error('No metadata directory found for android')
+          UI.error("No metadata directory found for #{platform}" )
         end
       end
 
@@ -135,7 +134,7 @@ module Fastlane
         # Adjust this if your plugin only works for a particular platform (iOS vs. Android, for example)
         # See: https://docs.fastlane.tools/advanced/#control-configuration-by-lane-and-by-platform
         #
-        [:android, :iOS].include?(platform)
+        [:android, :ios].include?(platform)
         # true
       end
     end
