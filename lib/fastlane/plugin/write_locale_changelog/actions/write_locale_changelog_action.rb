@@ -12,7 +12,9 @@ module Fastlane
         
         platform = lane_context[SharedValues::PLATFORM_NAME]
 
-        path_to_meta_locales_dir = platform == 'ios' ? params[:path_to_meta_dir] : File.join(params[:path_to_meta_dir], 'android')
+        UI.verbose("platform tests ios == ios #{platform == 'ios'}")
+
+        path_to_meta_locales_dir = platform == "ios" ? params[:path_to_meta_dir] : File.join(params[:path_to_meta_dir], "android")
         locales = params[:locales]
         changelog = params[:changelog_contents]
         build_number = params[:build_number]
