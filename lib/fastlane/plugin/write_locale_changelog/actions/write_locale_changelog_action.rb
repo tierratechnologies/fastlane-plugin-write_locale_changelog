@@ -7,6 +7,8 @@ module Fastlane
       def self.run(params)
 
         UI.verbose("path_to_meta_dir #{params[:path_to_meta_dir]}")
+
+        UI.message("platform #{lane_context[SharedValues::PLATFORM_NAME]}")
         
         # build path to metadata/android -> input needs to be absolute path
         path_to_meta_locales_dir = File.join(params[:path_to_meta_dir], 'android')
@@ -111,7 +113,7 @@ module Fastlane
         # Adjust this if your plugin only works for a particular platform (iOS vs. Android, for example)
         # See: https://docs.fastlane.tools/advanced/#control-configuration-by-lane-and-by-platform
         #
-        [:android].include?(platform)
+        [:android, :iOS].include?(platform)
         # true
       end
     end
