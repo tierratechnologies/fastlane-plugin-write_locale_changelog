@@ -10,19 +10,11 @@ module Fastlane
 
         UI.verbose("platform #{lane_context[SharedValues::PLATFORM_NAME]}")
         
-        # platform = lane_context[SharedValues::PLATFORM_NAME]
+        platform = lane_context[SharedValues::PLATFORM_NAME]
 
-        # UI.verbose("platform tests ios == ios #{platform == ios}")
+        UI.verbose("platform tests ios == ios #{platform == :ios}")
 
-        # path_to_meta_locales_dir = platform == "ios" ? params[:path_to_meta_dir] : File.join(params[:path_to_meta_dir], "android")
-        for_platform :ios do
-          path_to_meta_locales_dir = params[:path_to_meta_dir]
-        end
-
-        for_platform :android do
-          path_to_meta_locales_dir = File.join(params[:path_to_meta_dir], "android")
-        end
-
+        path_to_meta_locales_dir = platform == :ios ? params[:path_to_meta_dir] : File.join(params[:path_to_meta_dir], "android")
         locales = params[:locales]
         changelog = params[:changelog_contents]
         build_number = params[:build_number]
@@ -45,7 +37,7 @@ module Fastlane
               locale_dir_name = File.absolute_path(File.join(path_to_meta_locales_dir, locale))
               UI.verbose("local_dir_name #{locale_dir_name}")
 
-             for_platform :android do
+              if platform == :android then
 
                 changelogs_dir_name = File.join(locale_dir_name, 'changelogs')
                 UI.verbose("local_dir_name #{changelogs_dir_name}")
@@ -65,10 +57,8 @@ module Fastlane
                 UI.verbose("locale file_name #{file_name}")
 
                 File.open(file_name, "w") { |file| file.write(changelog)}
-
-              end
                
-              for_platform :ios do
+              elsif platform == :ios then
                 
                   # check locale directory exists
                 if Dir.exist?(locale_dir_name) == false then
@@ -83,6 +73,8 @@ module Fastlane
 
                 File.open(file_name, "w") { |file| file.write(changelog)}
 
+              else
+                UI.error('Unsupported platform')
               end
 
             end
