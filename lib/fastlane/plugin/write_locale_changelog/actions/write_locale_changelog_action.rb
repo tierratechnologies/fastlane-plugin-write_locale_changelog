@@ -26,7 +26,7 @@ module Fastlane
         UI.verbose("buildnumber #{build_number}")
 
         
-        if Dir.exists?(path_to_meta_locales_dir) then
+        if Dir.exist?(path_to_meta_locales_dir) then
 
           if locales.empty? == false then
             
